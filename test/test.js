@@ -114,4 +114,25 @@ describe('cordova-app-loader manifest creation in buffer mode', function () {
             });
     });
 
+    it('should emit error when used with Streams', function (done) {
+        var outFiles = 0;
+        gulp.src(testFixtures + '/**', {buffer: false})
+            .pipe(calManifest())
+            .on('data', function (file) {
+                outFiles++;
+            })
+            .on('error', function (err) {
+                expect(err, 'Error')
+                    .to.be.instanceof(Error);
+                expect(err.plugin, 'Error.plugin')
+                    .to.be.equal('gulp-cordova-app-loader-manifest');
+                done();
+            })
+            .on('end', function () {
+                expect(outFiles, 'Files output')
+                    .to.be.equal(1);
+                done();
+            });
+    });
+
 });
