@@ -29,6 +29,11 @@ var calManifest = function calManifest(options) {
             return done();
         }
 
+        if (file.isStream()) {
+            this.emit('error', new gutil.PluginError(PLUGIN_NAME, 'Streams are not supported!'));
+            return done();
+        }
+
         var hasher = require('crypto').createHash('sha256');
         var filename = encodeURI(file.relative);
         var key = filename.replace(/\//g, '_');
