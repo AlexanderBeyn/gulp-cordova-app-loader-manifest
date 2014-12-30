@@ -101,6 +101,20 @@ describe('cordova-app-loader manifest creation in buffer mode', function () {
             });
     });
 
+    it('should properly deal with !items in options.load', function (done) {
+        gulp.src(testFixtures + '/**')
+            .pipe(calManifest({load: ['**/*.js', '!**/file2.js']}))
+            .on('data', function (file) {
+                var manifest = JSON.parse(file.contents.toString());
+                expect(manifest.load, 'Manifest.load')
+                    .to.deep.equal(['js/file.js']);
+            })
+            .on('end', function () {
+                done();
+            });
+    });
+
+
     it('should set manifest.root from options.root', function (done) {
         gulp.src(testFixtures + '/**')
             .pipe(calManifest({root: './root/'}))
