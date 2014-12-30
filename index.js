@@ -42,11 +42,24 @@ var calManifest = function calManifest(options) {
             version: hasher.update(file.contents).digest('hex')
         };
 
-        options.load.forEach(function (pattern) {
-            if (minimatch(filename, pattern)) {
-                manifest.load.push(filename);
+        var i, pattern;
+        var doLoad = false;
+        for (i = 0; i < options.load.length; i++) {
+            pattern = options.load[i];
+            if (pattern.charAt(0) === '!') {
+                if (minimatch(filename, pattern, {flipNegate: true})) {
+                    doLoad = false;
+                    break;
+                }
+            } else {
+                if (minimatch(filename, pattern)) {
+                    doLoad = true;
+                }
             }
-        });
+        }
+        if (doLoad) {
+            manifest.load.push(filename);
+        }
 
         done();
     };
