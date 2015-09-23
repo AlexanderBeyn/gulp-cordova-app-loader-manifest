@@ -6,9 +6,10 @@ var minimatch = require('minimatch');
 
 var PLUGIN_NAME = 'gulp-cordova-app-loader-manifest';
 
-
 var calManifest = function calManifest(options) {
     options = options || {};
+    options.prefixSplit = options.prefixSplit || '';
+    
 
     if (!options.load) {
         options.load = ['**'];
@@ -34,11 +35,12 @@ var calManifest = function calManifest(options) {
             return done();
         }
 
-        var hasher = require('crypto').createHash('sha256');
-        var filename = encodeURI(file.relative);
-        var key = filename.replace(/\//g, '_');
+        var hasher = require('crypto').createHash('sha256'),
+            filename = encodeURI(file.relative),
+            filenamePrefix = filename.split(options.prefixSplit).pop(),
+            key = filename.replace(/\//g, '_');
         manifest.files[key] = {
-            filename: filename,
+            filename: filenamePrefix,
             version: hasher.update(file.contents).digest('hex')
         };
 
@@ -58,7 +60,7 @@ var calManifest = function calManifest(options) {
             }
         }
         if (doLoad) {
-            manifest.load.push(filename);
+            manifest.load.push(filenamePrefix);
         }
 
         done();

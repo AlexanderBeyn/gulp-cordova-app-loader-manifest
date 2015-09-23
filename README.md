@@ -29,3 +29,29 @@ A glob pattern, or array of glob patterns, against which files will be tested be
 options.root = './';
 ```
 Specifies the manifest.root option.
+
+#### prefixSplit
+```javascript
+options.prefixSplit = '/'
+```
+Specifies prefix to split the _options.load_ filenames (default value is '/').
+
+This means *options.prefixSplit = 'www/'* for the `['www/lib/app.js', 'www/css/style.css']` will produce the following output:
+```javascript
+manifest.files = {
+  "www_lib_app.js": {
+      "filename": "lib/app.js",
+      "version": "..."
+  },
+  
+  "www_css_style.css": {
+      "filename": "css/style.css",
+      "version": "..."
+  }
+};
+
+manifest.load = [
+  'lib/app.js',
+  'css/style.css'
+];
+```
