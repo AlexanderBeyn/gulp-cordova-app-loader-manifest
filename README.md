@@ -36,8 +36,8 @@ options.prefixSplit = '/'
 ```
 Specifies prefix to split the _options.load_ filenames (default value is '/').
 
-This means `options.prefixSplit = 'www/` for the `['www/lib/app.js', 'www/css/style.css']` will produce the following output:
-```javasript
+This means *options.prefixSplit = 'www/'* for the `['www/lib/app.js', 'www/css/style.css']` will produce the following output:
+```javascript
 manifest.files = {
   "www_lib_app.js": {
       "filename": "lib/app.js",
