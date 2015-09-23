@@ -8,7 +8,7 @@ var PLUGIN_NAME = 'gulp-cordova-app-loader-manifest';
 
 var calManifest = function calManifest(options) {
     options = options || {};
-    options.prefixSplit = options.prefixSplit || '/';
+    options.prefixSplit = options.prefixSplit || '';
     
 
     if (!options.load) {
@@ -37,7 +37,7 @@ var calManifest = function calManifest(options) {
 
         var hasher = require('crypto').createHash('sha256'),
             filename = encodeURI(file.relative),
-            filenamePrefix = filename.split(options.prefixSplit).pop()
+            filenamePrefix = filename.split(options.prefixSplit).pop(),
             key = filename.replace(/\//g, '_');
         manifest.files[key] = {
             filename: filenamePrefix,
